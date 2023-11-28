@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Of Ireland</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            background-color: #3498db; /* Light blue */
+            color: white;
+            padding: 20px;
+            margin: 0;
+            z-index: 1;
+            border-bottom: 5px solid #2980b9; /* Slightly darker blue border */
+        }
+
+        h2 {
+            color: #3498db; /* Light blue */
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        h3 {
+            color: #333;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        p {
+            margin: 20px 0;
+            text-align: center;
+            color: #333; /* Darken the text color for better readability */
+        }
+
+        .button-group {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1;
+        }
+
+        a {
+            background-color: #3498db; /* Light blue */
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            margin: 10px;
+            display: inline-block;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        a:hover {
+            background-color: #2980b9; /* Slightly darker blue on hover */
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            z-index: 1;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 15px;
+            margin: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        li:hover {
+            transform: scale(1.05);
+        }
+
+        .button-group a.signout-button {
+            background-color: #dc3545; /* Light red color for the "Sign Out" button */
+            border: 2px solid #c82333;
+        }
+
+        /* Add more styles as needed */
+    </style>
+</head>
+<body>
+    <h1>Welcome to Bank Of Ireland</h1>
+
+    <h2>Your Perfect Banking Partner</h2>
+    <h3>We are committed to keeping your everyday banking secure so you can manage your accounts and payments with confidence.</h3>
+
+    {% if username %}
+        <p>Welcome {{ username }}</p>
+    {% endif %}
+    
+    <ul>
+        {% if username=="adminuser1boi" %}
+            <li><a href="/showuseraccounts">Show User Account Details</a></li>
+            <li><a href="/showalldeposit">Show All Deposit</a></li>
+            <li><a href="/showallloans">Show All Loan Requests</a></li>
+            <li><a href="/addopennewaccount">Create New Account</a></li>
+            <li><a href="/depositamount">Deposit Amount</a></li>
+            <li><a href="/addloan">Apply Loan</a></li>
+            <li><a href="/myaccountdetails">Show My Account Details</a></li>
+            <li><a href="/showaccounttypes">Show AccountTypes</a></li>
+
+            <div class="button-group">
+                <a href="/signout" class="signout-button">Sign Out</a>
+            </div>
+        {% else %}
+            <li><a href="{{ url_for('signin') }}" class="signin-button">Sign In</a></li>
+            <li><a href="{{ url_for('signup') }}" class="signup-button">Sign Up</a></li>
+        {% endif %}
+    </ul>
+</body>
+</html>

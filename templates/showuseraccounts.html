@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Accounts</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #cce5ff;
+        }
+
+        .update-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .update-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Accounts</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Account Holder</th>
+                <th>Initial Balance</th>
+                <th>Current Balance</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Passport Number</th>
+                <th>Account Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+                <tr>
+                    <td>{{ account.account_number }}</td>
+                    <td>{{ account.account_holder }}</td>
+                    <td>{{ account.initial_balance }}</td>
+                    <td>{{ account.currentbalance }}</td>
+                    <td>{{ account.address }}</td>
+                    <td>{{ account.contact }}</td>
+                    <td>{{ account.passport_number }}</td>
+                    <td>{{ account.account_type }}</td>
+                    <td><button class="update-btn" onclick="location.href='/update/{{ account.userid }}'">Update</button></td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

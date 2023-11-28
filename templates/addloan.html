@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Loan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Add Loan</h2>
+
+    <form method="post" action="{{ url_for('addloan') }}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="loantype">Loan Type:</label>
+            <input type="text" class="form-control" id="loantype" name="loantype" required>
+        </div>
+        <div class="form-group">
+            <label for="loanpurpose">Loan Purpose:</label>
+            <input type="text" class="form-control" id="loanpurpose" name="loanpurpose" required>
+        </div>
+        <div class="form-group">
+            <label for="loanamount">Loan Amount:</label>
+            <input type="number" class="form-control" id="loanamount" name="loanamount" required>
+        </div>
+        <div class="form-group">
+            <label for="employcategory">Employment Type:</label>
+            <input type="text" class="form-control" id="employcategory" name="employcategory" required>
+        </div>
+        <div class="form-group">
+            <label for="idproof">Passport Number</label>
+            <input type="text" class="form-control" id="idproof" name="idproof" required>
+        </div>
+        <div class="form-group">
+            <label for="idproof">Passport Image (Only Front Page)</label>
+            <input type="file" class="form-control" id="idproof" name="idproof" required>
+        </div>
+        <div class="form-group">
+            <label for="moredetails">Additional Details:</label>
+            <textarea class="form-control" id="moredetails" name="moredetails" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

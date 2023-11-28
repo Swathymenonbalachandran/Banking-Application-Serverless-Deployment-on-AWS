@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Accounts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: Grey;
+            color: white;
+            padding: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #cce5ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Accounts</h1>
+
+    <table>
+        <tr>
+            <th>Account Number</th>
+            <th>Account Holder</th>
+            <th>Initial Balance</th>
+            <th>Current Balance</th>
+            <th>Address</th>
+            <th>Contact</th>
+            <th>Passport Number</th>
+            <th>Account Type</th>
+           
+        </tr>
+        {% for account in accounts %}
+            <tr>
+                <td>{{ account.account_number }}</td>
+                <td>{{ account.account_holder }}</td>
+                <td>{{ account.initial_balance }}</td>
+                <td>{{ account.currentbalance }}</td>
+                <td>{{ account.address }}</td>
+                <td>{{ account.contact }}</td>
+                <td>{{ account.passport_number }}</td>
+                <td>{{ account.account_type }}</td>
+                
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

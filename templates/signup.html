@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4; /* Light gray background */
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #007BFF; /* Blue header color */
+        }
+
+        form {
+            background-color: #ffffff; /* White background for the form */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+            display: inline-block;
+        }
+
+        input {
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745; /* Green submit button color */
+            color: white;
+            cursor: pointer;
+        }
+
+        a {
+            color: #007BFF; /* Blue link color */
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        li {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="post" action="/signup">
+        Username: <input type="text" name="username" required><br>
+        Email: <input type="text" name="email" required><br>
+        Password: <input type="password" name="password" required><br>
+        Account Number: <input type="text" name="account_number" required><br> <!-- New field for account number -->
+        Phone Number: <input type="text" name="contact" required><br> <!-- New field for phone number -->
+        <input type="submit" value="Sign Up">
+    </form>
+    <a href="{{ url_for('signin') }}">Already have an account? Sign In</a>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Deposit Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Deposit Details</h1>
+    <table>
+        <tr>
+            <th>Account Number</th>
+            <th>Account Holder</th>
+            <th>Deposit Amount</th>
+        </tr>
+        {% for deposit in deposit_details %}
+        <tr>
+            <td>{{ deposit.account_number }}</td>
+            <td>{{ deposit.account_holder }}</td>
+            <td>${{ deposit.deposit_amount }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
