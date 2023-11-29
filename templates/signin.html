@@ -1,71 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sign In</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4; /* Light gray background */
-            text-align: center;
-            padding: 50px;
-        }
-
-        h1 {
-            color: #007BFF; /* Blue header color */
-        }
-
-        form {
-            background-color: #ffffff; /* White background for the form */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
-            display: inline-block;
-        }
-
-        input {
-            margin-bottom: 15px;
-            padding: 10px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            background-color: #007BFF; /* Blue submit button color */
-            color: white;
-            cursor: pointer;
-        }
-
-        a {
-            color: #007BFF; /* Blue link color */
-            text-decoration: none;
-            display: block;
-            margin-top: 15px;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-
-        li {
-            color: red;
-        }
-    </style>
+    <!-- Your existing head content -->
+    {% if csrf_token() %}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    {% endif %}
 </head>
 <body>
+    <!-- Your existing body content -->
     <h1>Sign In</h1>
     <form method="post" action="{{ url_for('signin') }}">
+        {{ csrf_field() }} {# Include this line to add the CSRF token #}
         Username: <input type="text" name="username"><br>
         Password: <input type="password" name="password"><br>
         <input type="submit" value="Sign In">
     </form>
     <a href="{{ url_for('signup') }}">Don't have an account? Sign Up</a>
-
     <!-- Flash messages -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
