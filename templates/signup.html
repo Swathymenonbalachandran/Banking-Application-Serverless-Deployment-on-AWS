@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
         body {
@@ -20,6 +22,8 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
             display: inline-block;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         input {
@@ -59,12 +63,24 @@
 </head>
 <body>
     <h1>Sign Up</h1>
-    <form method="post" action="/signup">
-        Username: <input type="text" name="username" required><br>
-        Email: <input type="text" name="email" required><br>
-        Password: <input type="password" name="password" required><br>
-        Account Number: <input type="text" name="account_number" required><br> <!-- New field for account number -->
-        Phone Number: <input type="text" name="contact" required><br> <!-- New field for phone number -->
+    <form method="post" action="{{ url_for('signup') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <!-- Other form fields -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="account_number">Account Number:</label>
+        <input type="text" id="account_number" name="account_number" required><br>
+
+        <label for="contact">Phone Number:</label>
+        <input type="text" id="contact" name="contact" required><br>
+
         <input type="submit" value="Sign Up">
     </form>
     <a href="{{ url_for('signin') }}">Already have an account? Sign In</a>

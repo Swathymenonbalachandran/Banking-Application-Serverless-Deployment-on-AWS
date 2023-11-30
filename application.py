@@ -7,7 +7,8 @@ import requests, secrets
 from flask_migrate import Migrate
 from flask_cors import cross_origin
 from flask_wtf.csrf import CSRFProtect
-from flask_wtf.csrf import CSRFProtect
+
+
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -65,7 +66,7 @@ def signup():
 
 
 @application.route('/signin', methods=['GET', 'POST'])
-def signin():
+def signin(): 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']

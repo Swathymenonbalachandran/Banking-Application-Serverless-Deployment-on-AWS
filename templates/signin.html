@@ -1,6 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            color: red;
+        }
+    </style>
     <!-- Your existing head content -->
     {% if csrf_token() %}
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -10,9 +71,11 @@
     <!-- Your existing body content -->
     <h1>Sign In</h1>
     <form method="post" action="{{ url_for('signin') }}">
-        {{ csrf_field() }} {# Include this line to add the CSRF token #}
-        Userrrname: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# Hidden input for CSRF token #}
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required><br>
         <input type="submit" value="Sign In">
     </form>
     <a href="{{ url_for('signup') }}">Don't have an account? Sign Up</a>
