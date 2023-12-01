@@ -53,6 +53,10 @@ def signup():
         account_number = request.form['account_number']  # Get the new account number field
         contact = request.form['contact']  # Get the new phone number field
 
+        if account_number != '04122023':
+            flash('Error: Signup is only allowed for branch code of Bank of Ireland.', 'error')
+            return redirect(url_for('signup'))
+
         # Add these fields to your User record in the database
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         new_user = User(username=username, email=email, password=hashed_password, account_number=account_number, contact=contact)
@@ -193,6 +197,7 @@ def showuseraccounts():
         if response.status_code == 200:
             # Parse the JSON response
             accounts = response.json()
+            print("accountsdata:",accounts)
             return render_template('showuseraccounts.html', accounts=accounts)
         else:
             return "Error fetching data from the API"
@@ -200,8 +205,8 @@ def showuseraccounts():
     except Exception as e:
         return f"Error: {str(e)}"
     
-@application.route('/showallloans')
-def showallloans():
+@application.route('/showloanrequest')
+def showloanrequest():
     try:
         # Retrieve loan details from the DynamoDB or API
         response = requests.get(API_ENDPOINT, json={'action': 'getloans'})
@@ -209,7 +214,7 @@ def showallloans():
         if response.status_code == 200:
             # Parse the JSON response
             loans = response.json()
-            return render_template('showallloans.html', loans=loans)
+            return render_template('showloanreq.html', loans=loans)
         else:
             return "Error fetching loan data from the API"
        
@@ -220,6 +225,9 @@ def showallloans():
 def show_account_types():
     return render_template('showaccounttypes.html')
 
+@application.route('/showloans')
+def showloans():
+    return render_template('showloans.html')
 
 @application.route('/updateaccount', methods=['GET', 'POST'])
 def updateaccount():

@@ -58,6 +58,7 @@
 <body>
     <h1>Open New Account</h1>
     <form method="post" action="/addopennewaccount">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="account_holder">Account Holder Name:</label>
         <input type="text" name="account_holder" required>
 

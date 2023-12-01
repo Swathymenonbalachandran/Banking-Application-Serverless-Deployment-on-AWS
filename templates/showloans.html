@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Accounts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #6c757d; /* Grey */
+            color: white;
+            padding: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #cce5ff;
+        }
+
+        .loan-details {
+            padding: 20px;
+            margin: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bank of Ireland Loans</h1>
+
+    <div class="loan-details">
+        <h2>Car Loan</h2>
+        <p>Thinking of buying a car? With a variable rate loan from Bank of Ireland you have the option of making extra repayments and clear your loan early.</p>
+
+        <h3>Features</h3>
+        <ul>
+            <li>Variable rates from 6.8% APR3</li>
+            <li>Repay your loan over 1–5 years</li>
+            <li>Defer loan repayments 2</li>
+        </ul>
+
+        <h3>Benefits</h3>
+        <ul>
+            <li>Borrow up to €65,000</li>
+            <li>Money paid to your account</li>
+            <li>Quick and easy application</li>
+        </ul>
+    </div>
+
+    <div class="loan-details">
+        <h2>Home Improvement Loan</h2>
+        <p>Thinking of that new kitchen? Converting your attic? Extending your home? Get the ball rolling on whatever home improvement project you choose with a home improvement loan from Bank of Ireland.</p>
+
+        <h3>Features</h3>
+        <ul>
+            <li>Variable rates from 6.8% APR3</li>
+            <li>Repay your loan over 1–7 years</li>
+            <li>Defer loan repayments2</li>
+        </ul>
+
+        <h3>Benefits</h3>
+        <ul>
+            <li>Borrow up to €65,000</li>
+            <li>Money paid into your account</li>
+            <li>No hidden fees or charges</li>
+        </ul>
+    </div>
+
+    <div class="loan-details">
+        <h2>Student Loan</h2>
+        <p>Looking for a student loan? We have the student loan for you - whether you need to borrow money to pay for your everyday college expenses or want a more specific loan for your student contribution charge. Check out our range of student products here.</p>
+    </div>
+
+    <div class="loan-details">
+        <h2>Personal Loan</h2>
+        <h3>Benefits</h3>
+        <ul>
+            <li>Borrow up to €65,000</li>
+            <li>Money paid into your account</li>
+            <li>Quick and easy application</li>
+        </ul>
+    </div>
+    <h2><a href="{{ url_for('index') }}">Back to home</a></h2>
+</body>
+</html>

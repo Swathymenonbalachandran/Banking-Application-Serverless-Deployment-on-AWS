@@ -100,19 +100,17 @@
     <h2>Your Perfect Banking Partner</h2>
     <h3>We are committed to keeping your everyday banking secure so you can manage your accounts and payments with confidence.</h3>
 
-    {% if username %}
-        <p>Welcome {{ username }}</p>
-    {% endif %}
+    
     
     <ul>
-        {% if username == "boiadminstaff" or username == "boibankmanager" %}
+        {% if (username=="boiadminstaff1" or username=="boiadminstaff2" or username=="boiadminstaff3" or username=="boibankmanager" ) %}
             <li><a href="/showuseraccounts">Show User Account Details</a></li>
             <li><a href="/showalldeposit">Show All Deposit</a></li>
-            <li><a href="/showallloans">Show All Loan Requests</a></li>
+            <li><a href="/showloanrequest">Show All Loan Requests</a></li>
             <li><a href="/addopennewaccount">Create New Account</a></li>
             <li><a href="/depositamount">Deposit Amount</a></li>
             <li><a href="/addloan">Apply Loan</a></li>
-            <li><a href="/myaccountdetails">Show My Account Details</a></li>
+            <li><a href="/showloans">Show Loans</a></li>
             <li><a href="/showaccounttypes">Show AccountTypes</a></li>
 
             <div class="button-group">
