@@ -7,20 +7,29 @@ import requests, secrets
 from flask_migrate import Migrate
 from flask_cors import cross_origin
 from flask_wtf.csrf import CSRFProtect
-
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
+from flask_login import LoginManager
+from flask_login import UserMixin, login_user, login_required, current_user, logout_user
+from flask_login import login_required
+import boto3
+from boibanklibrary import BankLibrary
 
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = secrets.token_hex(16)
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # Use your preferred database URL
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking, as it's not needed
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 db = SQLAlchemy(application)
 bcrypt = Bcrypt(application)
 migrate = Migrate(application, db)
 csrf = CSRFProtect(application)
+login_manager = LoginManager(application)
+
+
 
 # API endpoint URL
 API_ENDPOINT = "https://v4gp08sg4f.execute-api.eu-west-1.amazonaws.com/x23108568bankaccount"
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +41,14 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+    
+# Create an instance of my BankLibrary
+bank_library = BankLibrary(User, secrets)    
+
+@login_manager.user_loader
+def load_user(user_id):
+    # Your code to load a user from the user_id
+    return User.query.get(int(user_id))
 
 class Deposit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,14 +67,14 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        account_number = request.form['account_number']  # Get the new account number field
-        contact = request.form['contact']  # Get the new phone number field
+        account_number = request.form['account_number']  
+        contact = request.form['contact']  
 
         if account_number != '04122023':
             flash('Error: Signup is only allowed for branch code of Bank of Ireland.', 'error')
             return redirect(url_for('signup'))
 
-        # Add these fields to your User record in the database
+        
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         new_user = User(username=username, email=email, password=hashed_password, account_number=account_number, contact=contact)
         db.session.add(new_user)
@@ -78,7 +95,7 @@ def signin():
         user = User.query.filter_by(username=username).first() 
         if user and bcrypt.check_password_hash(user.password, password):
             flash('Login successful!', 'success')
-            session['username'] = username  # Store username in the session
+            session['username'] = username  
             return redirect(url_for('index'))
         else:
             flash('Invalid email or password. Please try again.', 'danger')
@@ -87,7 +104,7 @@ def signin():
 
 @application.route('/signout')
 def signout():
-    # Clear the username from the session
+    
     session.pop('username', None)
     flash('You have been signed out successfully!', 'success')
     return redirect(url_for('index'))
@@ -101,7 +118,7 @@ def index():
 @application.route('/addopennewaccount', methods=['POST', 'GET'])
 def addopennewaccount():
     if request.method == 'POST':
-        # Retrieve product details from the form
+        
         account_holder = request.form['account_holder']
         account_type = request.form['account_type']
         address = request.form['address']
@@ -111,13 +128,13 @@ def addopennewaccount():
         passport_number = request.form['passport_number']
 
         try:
-            # Generate a unique account number
-            account_number = generate_unique_account_number()
+           
+            account_number = bank_library.generate_unique_account_number()
 
-            # Construct the payload as a dictionary
+            
             payload = {
                 'action': 'addopennewaccount',
-                'userid': str(uuid.uuid4()),  # Generate a unique material_id, you can use your own logic here
+                'userid': str(uuid.uuid4()), 
                 'account_holder': account_holder,
                 'account_number': account_number,
                 'account_type': account_type,
@@ -128,74 +145,67 @@ def addopennewaccount():
                 'passport_number': passport_number,
             }
 
-            # Send the payload as JSON data
+           
             response = requests.post(API_ENDPOINT, json=payload)
 
             flash('New account added successfully!', 'success')
             return redirect(url_for('index'))
 
         except Exception as e:
-            print(f'Error placing order from cart: {str(e)}')
-            return render_template('error.html', error=f'Error placing order from cart: {str(e)}')
+            print(f'Errorfor create new account : {str(e)}')
+            return render_template('addloan.html', error=f'Error for create new account: {str(e)}')
     elif request.method == 'GET':
         return render_template('addopennewaccount.html')
-    
-def generate_unique_account_number():
-    while True:
-        account_number = secrets.token_hex(6).upper()  # Adjust the length as needed
-        if not User.query.filter_by(account_number=account_number).first():
-            return account_number
-
+ 
 @application.route('/addloan', methods=['POST', 'GET'])
 @cross_origin()
 @csrf.exempt
 def addloan():
     if request.method == 'POST':
-        # Retrieve loan details from the form
         loantype = request.form['loantype']
         loanpurpose = request.form['loanpurpose']
         loanamount = request.form['loanamount']
         employcategory = request.form['employcategory']
         moredetails = request.form['moredetails']
         idproof = request.form['idproof']
-        passportimage = request.files.get('passportimage')  # New field
-        if passportimage:
-                print('Found passport_image')
-                passportimage_data = passportimage.read()
-                passportimage_base64 = base64.b64encode(passportimage_data).decode('utf-8')
-                print('Base64 Encoded Image:', passportimage_base64)
+
         try:
-            # Construct the payload as a dictionary
             payload = {
                 'action': 'addloans',
-                'loanid': str(uuid.uuid4()),  # Generate a unique loanid, you can use your own logic here
+                'loanid': str(uuid.uuid4()),
                 'loantype': loantype,
                 'loanpurpose': loanpurpose,
                 'loanamount': loanamount,
                 'employcategory': employcategory,
                 'moredetails': moredetails,
-                'idproof': idproof,  # Include the new field in the payload
-                'passportimage': passportimage_base64
+                'idproof': idproof,
             }
 
-            # Send the payload as JSON data
             response = requests.post(API_ENDPOINT, json=payload)
 
-            flash('Loan added successfully!', 'success')
-            return redirect(url_for('index'))
+            if response.status_code == 200:
+                flash('Loan added successfully!', 'success')
+                return redirect(url_for('index'))
+            else:
+                flash(f'Error adding loan. Status code: {response.status_code}', 'danger')
+                return render_template('addloan.html', error=f'Error adding loan. Status code: {response.status_code}')
 
         except Exception as e:
             print(f'Error adding loan: {str(e)}')
-            return render_template('error.html', error=f'Error adding loan: {str(e)}')
+            flash(f'Error adding loan: {str(e)}', 'danger')
+            return render_template('addloan.html', error=f'Error adding loan: {str(e)}')
+
     elif request.method == 'GET':
         return render_template('addloan.html')
+
+ 
 
 @application.route('/showuseraccounts')
 def showuseraccounts():
     try:
         response = requests.get(API_ENDPOINT, json={'action': 'listaccounts'})
         if response.status_code == 200:
-            # Parse the JSON response
+            
             accounts = response.json()
             print("accountsdata:",accounts)
             return render_template('showuseraccounts.html', accounts=accounts)
@@ -208,11 +218,11 @@ def showuseraccounts():
 @application.route('/showloanrequest')
 def showloanrequest():
     try:
-        # Retrieve loan details from the DynamoDB or API
+       
         response = requests.get(API_ENDPOINT, json={'action': 'getloans'})
         
         if response.status_code == 200:
-            # Parse the JSON response
+            
             loans = response.json()
             return render_template('showloanreq.html', loans=loans)
         else:
@@ -229,9 +239,14 @@ def show_account_types():
 def showloans():
     return render_template('showloans.html')
 
+@application.route('/addinsurance')
+def addinsurance():
+    return render_template('addinsurance.html')
+
+
 @application.route('/updateaccount', methods=['GET', 'POST'])
 def updateaccount():
-    # Retrieve product details from the form
+  
     userid = request.form['userid']
     account_holder = request.form['account_holder']
     account_number = request.form['account_number']
@@ -244,7 +259,7 @@ def updateaccount():
     
  
     try:
-        # Invoke the Lambda function to update the product in DynamoDB
+       
         payload = {
             'action': 'updateaccount',
             'userid': userid,
@@ -273,11 +288,11 @@ def updateaccount():
 def accountdetails(userid):
     try:
         if request.method == 'GET':
-            # Fetch the details of the specific account using the userid
+            
             response = requests.get(API_ENDPOINT, json={'action': 'get_account', 'userid': userid})
  
             if response.status_code == 200:
-                # Parse the JSON response
+                
                 account = response.json()
                 return render_template('addopennewaccount.html', account=account)
             else:
@@ -285,7 +300,7 @@ def accountdetails(userid):
                 return redirect(url_for('index'))
  
         elif request.method == 'POST':
-            # Retrieve updated account details from the form
+            
             userid = request.form['userid']
             account_holder = request.form['account_holder']
             account_number = request.form['account_number']
@@ -296,7 +311,7 @@ def accountdetails(userid):
             initial_balance = request.form['initial_balance']
             passport_number = request.form['passport_number']
  
-            # Invoke the Lambda function to update the product in DynamoDB
+           
             payload = {
                 'action': 'updateaccount',
                 'userid': userid,
@@ -331,13 +346,13 @@ def depositamount():
         deposit_amount = request.form['deposit_amount']
 
         try:
-            # Save deposit details to the database
-            with application.application_context():
+           
+            with application.app_context():
                 new_deposit = Deposit(account_number=account_number, account_holder=account_holder, deposit_amount=deposit_amount)
                 db.session.add(new_deposit)
                 db.session.commit()
 
-            # Update the current balance in DynamoDB
+            
             update_current_balance_dynamodb(account_number, deposit_amount)
 
             flash('Deposit successful!', 'success')
@@ -350,22 +365,22 @@ def depositamount():
 
     return render_template('depositamount.html')
 
-# Function to update the current balance in DynamoDB
+
 def update_current_balance_dynamodb(account_number, deposit_amount):
     try:
-        # Fetch the current balance from DynamoDB
+       
         response = requests.get(API_ENDPOINT, json={'action': 'get_accounts', 'account_number': account_number})
 
         if response.status_code == 200:
             account = response.json()
             current_balance = Decimal(account.get('currentbalance', '0'))
 
-            # Calculate the new balance
+           
             new_balance = current_balance + Decimal(deposit_amount)
 
             print('new_balance:',new_balance)
 
-            # Update the current balance in DynamoDB
+            
             updateaccount(
                 account.get('userid', ''),
                 account.get('account_holder', ''),
@@ -373,7 +388,7 @@ def update_current_balance_dynamodb(account_number, deposit_amount):
                 account.get('account_type', ''),
                 account.get('address', ''),
                 account.get('contact', ''),
-                str(new_balance),  # Convert to string for DynamoDB Decimal compatibility
+                str(new_balance),  
                 account.get('initial_balance', ''),
                 account.get('passport_number', '')
             )
@@ -388,7 +403,7 @@ def update_current_balance_dynamodb(account_number, deposit_amount):
 @application.route('/showalldeposit')
 def showalldeposit():
     try:
-        # Retrieve deposit details from the database
+        
         deposit_details = Deposit.query.all()
         return render_template('showalldeposit.html', deposit_details=deposit_details)
 

@@ -3,40 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Loan</title>
+    <title>Add Insurance</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
 <div class="container mt-5">
-    <h2>Add Loan</h2>
+    <h2>Add Insurance</h2>
 
-    <form method="post" action="{{ url_for('addloan') }}" enctype="multipart/form-data">
-
+    <form method="post" action="{{ url_for('addinsurance') }}" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="loantype">Loan Type:</label>
-            <input type="text" class="form-control" id="loantype" name="loantype" required>
+            <label for="insurancetype">Insurance Type:</label>
+            <input type="text" class="form-control" id="insurancetype" name="type" required>
         </div>
         <div class="form-group">
-            <label for="loanpurpose">Loan Purpose:</label>
-            <input type="text" class="form-control" id="loanpurpose" name="loanpurpose" required>
+            <label for="insurancepurpose">Property/Vehicle Information:</label>
+            <input type="text" class="form-control" id="insurancepurpose" name="insurancepurpose" required>
         </div>
         <div class="form-group">
-            <label for="loanamount">Loan Amount:</label>
-            <input type="number" class="form-control" id="loanamount" name="loanamount" required>
+            <label for="insuranceamount">Insurance Amount:</label>
+            <input type="number" class="form-control" id="insuranceamount" name="insuranceamount" required>
         </div>
         <div class="form-group">
             <label for="employcategory">Employment Type:</label>
             <input type="text" class="form-control" id="employcategory" name="employcategory" required>
         </div>
         <div class="form-group">
-            <label for="idproof">Identification Number </label>
+            <label for="idproof">Identification Number:</label>
             <input type="text" class="form-control" id="idproof" name="idproof" required>
+        </div>
+        <div class="form-group">
+            <label for="passportImage">Passport Image (Only Front Page):</label>
+            <input type="file" class="form-control" id="passportImage" name="passportImage" required>
         </div>
         
         <div class="form-group">
-            <label for="moredetails">Contact Details</label>
-            <textarea class="form-control" id="moredetails" name="moredetails" rows="3"></textarea>
+            <label for="contactDetails">Contact Details:</label>
+            <textarea class="form-control" id="contactDetails" name="contactDetails" rows="3"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

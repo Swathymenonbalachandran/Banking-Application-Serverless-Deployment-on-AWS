@@ -20,6 +20,31 @@
             margin-bottom: 20px;
         }
 
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .search-btn {
+            padding: 8px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background-color: #0056b3;
+        }
+
         table {
             width: 90%;
             border-collapse: collapse;
@@ -60,12 +85,26 @@
         .update-btn:hover {
             background-color: #218838;
         }
+
+        /* Add a class to hide rows by default */
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>User Accounts</h1>
 
-    <table>
+    <!-- Search Form -->
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" class="search-input" placeholder="Search by Account Number" id="accountNumberInput" name="accountNumber">
+            <button type="button" class="search-btn" onclick="searchAccounts()">Search</button>
+        </form>
+    </div>
+
+    <!-- User Accounts Table -->
+    <table id="userTable">
         <thead>
             <tr>
                 <th>Account Number</th>
@@ -91,10 +130,34 @@
                     <td>{{ account.passport_number }}</td>
                     <td>{{ account.account_type }}</td>
                     <td><button class="update-btn" onclick="location.href='/update/{{ account.userid }}'">Update</button></td>
-
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function searchAccounts() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("accountNumberInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("userTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those that don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; // Assuming the account number is in the first column
+
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].classList.remove("hidden");
+                    } else {
+                        tr[i].classList.add("hidden");
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
