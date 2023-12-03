@@ -13,6 +13,7 @@
 
     <form method="post" action="{{ url_for('addloan') }}" enctype="multipart/form-data">
 
+
         <div class="form-group">
             <label for="loantype">Loan Type:</label>
             <input type="text" class="form-control" id="loantype" name="loantype" required>
@@ -30,13 +31,16 @@
             <input type="text" class="form-control" id="employcategory" name="employcategory" required>
         </div>
         <div class="form-group">
-            <label for="idproof">Identification Number </label>
+            <label for="idproof">Identification Number:</label>
             <input type="text" class="form-control" id="idproof" name="idproof" required>
         </div>
-        
         <div class="form-group">
-            <label for="moredetails">Contact Details</label>
+            <label for="moredetails">Contact Details:</label>
             <textarea class="form-control" id="moredetails" name="moredetails" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="imagedata">Upload Image:</label>
+            <input type="file" class="form-control-file" id="imagedata" name="imagedata" accept="image/*">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

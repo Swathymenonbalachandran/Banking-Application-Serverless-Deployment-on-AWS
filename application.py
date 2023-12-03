@@ -13,6 +13,8 @@ from flask_login import UserMixin, login_user, login_required, current_user, log
 from flask_login import login_required
 import boto3
 from boibanklibrary import BankLibrary
+from flask import request
+import base64
 
 
 application = Flask(__name__)
@@ -168,6 +170,15 @@ def addloan():
         employcategory = request.form['employcategory']
         moredetails = request.form['moredetails']
         idproof = request.form['idproof']
+        imagedata = request.files.get('imagedata')
+ 
+        if imagedata:
+            print('Found imagedata')
+            imagedatadata= imagedata.read()
+            imagedata_base64 = base64.b64encode(imagedatadata).decode('utf-8')
+            print('Base64 Encoded Image:', imagedata_base64)
+
+
 
         try:
             payload = {
@@ -179,6 +190,8 @@ def addloan():
                 'employcategory': employcategory,
                 'moredetails': moredetails,
                 'idproof': idproof,
+                'imagedata': imagedata_base64
+
             }
 
             response = requests.post(API_ENDPOINT, json=payload)
