@@ -27,29 +27,26 @@ migrate = Migrate(application, db)
 csrf = CSRFProtect(application)
 login_manager = LoginManager(application)
 
-
-
-# API endpoint URL
+# MY API endpoint URL
 API_ENDPOINT = "https://v4gp08sg4f.execute-api.eu-west-1.amazonaws.com/x23108568bankaccount"
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    account_number = db.Column(db.String(20), unique=True, nullable=False)  # Add the new account number field
-    contact = db.Column(db.String(20), unique=True, nullable=False)  # Add the new phone number field
+    account_number = db.Column(db.String(20), unique=True, nullable=False)  
+    contact = db.Column(db.String(20), unique=True, nullable=False)  
 
     def __repr__(self):
         return f'<User {self.username}>'
     
-# Create an instance of my BankLibrary
+# my BankLibrary
 bank_library = BankLibrary(User, secrets)    
 
 @login_manager.user_loader
 def load_user(user_id):
-    # Your code to load a user from the user_id
+    
     return User.query.get(int(user_id))
 
 class Deposit(db.Model):
@@ -132,8 +129,7 @@ def addopennewaccount():
         try:
            
             account_number = bank_library.generate_unique_account_number()
-
-            
+           
             payload = {
                 'action': 'addopennewaccount',
                 'userid': str(uuid.uuid4()), 
@@ -146,10 +142,8 @@ def addopennewaccount():
                 'initial_balance': initial_balance,
                 'passport_number': passport_number,
             }
-
-           
+          
             response = requests.post(API_ENDPOINT, json=payload)
-
             flash('New account added successfully!', 'success')
             return redirect(url_for('index'))
 
@@ -177,9 +171,6 @@ def addloan():
             imagedatadata= imagedata.read()
             imagedata_base64 = base64.b64encode(imagedatadata).decode('utf-8')
             print('Base64 Encoded Image:', imagedata_base64)
-
-
-
         try:
             payload = {
                 'action': 'addloans',
@@ -350,7 +341,7 @@ def accountdetails(userid):
         flash(f"Error: {str(e)}", 'danger')
         return redirect(url_for('index'))
 
-# ...
+
 @application.route('/depositamount', methods=['GET', 'POST'])
 def depositamount():
     if request.method == 'POST':
